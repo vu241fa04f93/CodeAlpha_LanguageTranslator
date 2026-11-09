@@ -1,0 +1,193 @@
+================================================================================
+                    AITRANSLATOR - COMPLETE SETUP & RUN GUIDE
+================================================================================
+Website Name : AITranslator
+Tagline      : "Every Language. One Intelligence."
+Stack        : React 19 + Vite + Tailwind CSS v4 + Express.js + LibreTranslate
+================================================================================
+
+If you downloaded or extracted this project as a ZIP file on a new laptop,
+follow this step-by-step guide to install all dependencies and run the app.
+
+
+--------------------------------------------------------------------------------
+STEP 1: PREREQUISITES (Check before running)
+--------------------------------------------------------------------------------
+
+1. Node.js (Version 18, 20, 22, or higher)
+   - Check if installed by opening Command Prompt or PowerShell:
+       node -v
+       npm -v
+   - If not installed, download the "LTS" version from:
+       https://nodejs.org/
+   - After installing, restart your terminal or VS Code.
+
+2. (Optional for full offline AI) Python 3.10 or 3.11
+   - Needed only if you wish to run the local offline LibreTranslate engine.
+   - Download from: https://www.python.org/downloads/
+
+
+--------------------------------------------------------------------------------
+STEP 2: EXTRACT THE ZIP FILE
+--------------------------------------------------------------------------------
+
+1. Right-click the `.zip` file and select "Extract All..."
+2. Choose a destination folder (e.g., C:\Projects\LanguageTranslator or Desktop).
+3. The folder structure should look like this:
+
+   LanguageTranslator/
+   ├── client/                  (React + Vite frontend)
+   ├── server/                  (Express.js backend API)
+   ├── package.json             (Root scripts for running everything)
+   ├── howToRun.txt             (This guide)
+   └── README.md
+
+
+--------------------------------------------------------------------------------
+STEP 3: INSTALL ALL DEPENDENCIES (One Command)
+--------------------------------------------------------------------------------
+
+1. Open VS Code:
+   - Click "File" > "Open Folder..." and select the "LanguageTranslator" folder.
+   - Open a new terminal inside VS Code: Press `Ctrl + ~` (or Terminal > New Terminal).
+
+2. Run this single command in the project root:
+   
+   npm run install:all
+
+   *Note: This automatically installs packages in:
+     - Root directory
+     - server/ directory
+     - client/ directory
+
+---
+*Manual Alternative (if the above command ever fails):*
+   npm install
+   cd server && npm install
+   cd ../client && npm install
+   cd ..
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+STEP 4: VERIFY CONFIGURATION (.env)
+--------------------------------------------------------------------------------
+
+The backend uses `server/.env`. A ready-to-use file is already included:
+
+   PORT=5000
+   LIBRETRANSLATE_URL=http://127.0.0.1:5001
+   NODE_ENV=development
+
+No external API keys (such as Google Cloud or OpenAI) are required!
+Everything runs locally and privately.
+
+
+--------------------------------------------------------------------------------
+STEP 5: RUN THE APPLICATION
+--------------------------------------------------------------------------------
+
+You have two convenient ways to run:
+
+================================================================================
+METHOD A: ONE COMMAND (RECOMMENDED FOR QUICK START)
+================================================================================
+
+In your VS Code terminal (or Command Prompt in the project root folder):
+
+   npm run dev
+
+This concurrently launches:
+  - Express Backend API  -> http://localhost:5000
+  - Vite React Frontend  -> http://localhost:5173
+
+Now open your web browser and navigate to:
+   http://localhost:5173
+
+
+================================================================================
+METHOD B: SEPARATE TERMINALS (BEST FOR DEVELOPMENT / DEBUGGING)
+================================================================================
+
+Open TWO separate terminal windows in VS Code:
+
+Terminal 1 (Backend Server):
+   cd server
+   npm run dev
+   --> Server will start on http://localhost:5000
+
+Terminal 2 (Frontend Client):
+   cd client
+   npm run dev
+   --> Frontend will start on http://localhost:5173
+
+Open your browser at:
+   http://localhost:5173
+
+
+--------------------------------------------------------------------------------
+STEP 6: (OPTIONAL) RUNNING LOCAL LIBRETRANSLATE ENGINE (Port 5001)
+--------------------------------------------------------------------------------
+
+AITranslator features a hybrid translation engine:
+  - Telugu, Tamil, Hindi, and Indic languages are powered by the built-in
+    Indic Neural Engine inside the Node.js backend.
+  - Spanish, French, German, Japanese, Chinese, etc., are routed to local
+    LibreTranslate on port 5001.
+
+To run LibreTranslate locally on your new laptop:
+
+Option 1: Using Python pip (easiest)
+   1. Install LibreTranslate:
+      pip install libretranslate
+   2. Start it on port 5001:
+      libretranslate --port 5001
+   3. Check in your browser:
+      http://127.0.0.1:5001/languages
+
+Option 2: Using Docker (if Docker Desktop is installed)
+   docker run -ti -p 5001:5000 libretranslate/libretranslate
+
+
+--------------------------------------------------------------------------------
+PORT REFERENCE SUMMARY
+--------------------------------------------------------------------------------
+
+  Service                  URL                        Description
+  -----------------------  -------------------------  --------------------------
+  Frontend Website         http://localhost:5173      User interface
+  Backend Express API      http://localhost:5000      API & translation router
+  LibreTranslate Local     http://127.0.0.1:5001      Local AI engine (Port 5001)
+  Backend Health Check     http://localhost:5000/api/health
+
+
+--------------------------------------------------------------------------------
+TROUBLESHOOTING & COMMON QUESTIONS
+--------------------------------------------------------------------------------
+
+Q1: "npm : The term 'npm' is not recognized..."
+A1: Node.js is not installed or not added to your PATH.
+    Download and install Node.js from https://nodejs.org/ and restart your terminal.
+
+Q2: "Port 5000 is already in use"
+A2: Another application or existing Node instance is using port 5000.
+    In Windows PowerShell, find and close it:
+       Get-Process -Id (Get-NetTCPConnection -LocalPort 5000).OwningProcess | Stop-Process
+    Or edit `server/.env` and change PORT to 5002.
+
+Q3: "Port 5173 is already in use"
+A3: Vite will automatically offer port 5174. You can open that port in your browser.
+
+Q4: "Script execution is disabled on this system" (Windows PowerShell policy)
+A4: Run this command in PowerShell as Administrator once:
+       Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+    Or simply use Command Prompt (cmd.exe) instead of PowerShell.
+
+Q5: Do I need an internet connection?
+A5: You need internet only once during `npm run install:all` to download npm
+    packages. Once installed, the application runs entirely on your local machine.
+
+================================================================================
+                  Enjoy using AITranslator! 🌐🚀
+================================================================================
+
